@@ -1,0 +1,15 @@
+{
+  "name": "kbo-injury-crawler",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed": "node seed.js",
+    "fetch": "node fetch-news.js",
+    "parse": "node parse-injuries.js",
+    "export": "node export-json.js",
+    "all": "node seed.js && node fetch-news.js && node parse-injuries.js && node export-json.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0"
+  }
+}

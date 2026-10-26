@@ -1,0 +1,4 @@
+name,team_id,position,birth_date,kbo_id
+# MVP 1차: 삼성 라이온즈 2021–2026. 명단은 fetch-roster.js 로 채울 예정. '#' 줄은 무시됩니다.
+# 예시 1행
+구자욱,SAMSUNG,외야수,1993-02-12,

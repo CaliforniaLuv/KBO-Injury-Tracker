@@ -1,0 +1,8 @@
+.env
+data/*.db
+data/*.db-journal
+web/node_modules/
+web/.next/
+web/out/
+web/public/data/
+crawler/node_modules/

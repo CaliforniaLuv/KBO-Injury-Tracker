@@ -1,0 +1,24 @@
+id,name_ko,name_en,region,svg_zone,sided
+head,머리/뇌진탕,Head,head,head,0
+neck,목,Neck,head,neck,0
+shoulder,어깨,Shoulder,arm,shoulder,1
+elbow,팔꿈치,Elbow,arm,elbow,1
+forearm,전완/팔뚝,Forearm,arm,forearm,1
+wrist,손목,Wrist,arm,wrist,1
+hand,손/손가락,Hand,arm,hand,1
+chest,가슴/갈비뼈,Chest,torso,chest,0
+back,등,Upper back,torso,back,0
+lower_back,허리,Lower back,torso,lower_back,0
+oblique,옆구리/복사근,Oblique,torso,oblique,1
+abdomen,복부,Abdomen,torso,abdomen,0
+hip,골반/고관절,Hip,leg,hip,1
+groin,사타구니/내전근,Groin,leg,groin,1
+quad,허벅지 앞,Quadriceps,leg,quad,1
+hamstring,햄스트링,Hamstring,leg,hamstring,1
+knee,무릎,Knee,leg,knee,1
+calf,종아리,Calf,leg,calf,1
+shin,정강이,Shin,leg,shin,1
+ankle,발목,Ankle,leg,ankle,1
+foot,발/족저근막,Foot,leg,foot,1
+illness,질병/전신,Illness,other,other,0
+unknown,부위 불명,Unknown,other,other,0
