@@ -1,12 +1,23 @@
-# KBO 선수 부상 이력 및 가용성 분석 대시보드
+# KBO 선수 부상 이력 분석 대시보드
 
-<p align="center"><img src="./protect.webp" alt="뽁뽁이로 온몸을 감싼 사람" width="280"></p>
+<p align="left"><img src="./protect.webp" alt="뽁뽁이로 온몸을 감싼 사람" width="280"></p>
 
 2021–2026 시즌 KBO 선수 부상 이력을 SVG 신체 히트맵으로 보여주는 대시보드.
 
-- 기획: `docs/01-기획.md`
-- 아키텍처: `docs/02-아키텍처.md`
-- 디자인: `docs/03-디자인.md`
+## 배경
+
+야구에서 선수를 평가할 때는 타자는 타율, 투수는 평균자책점 같은 성과 지표를 본다. 그런데 이 지표들은 "뛰었을 때 얼마큼 잘했나"만 말해주지, "얼마나 자주, 얼마나 오래 빠졌나"는 스탯티즈 등 공식적으로 시각화하여 알려주지 않는다.
+
+시즌 내내 잘하다가 $\color{red}\text{가을야구를 앞두고 부상}$으로 이탈하는 선수, $\color{red}\text{복귀와 재부상을 반복}$하는 선수를 보면서 이런 생각이 들었다. 이 기록은 흩어진 뉴스 기사에만 남아 있고, 누적해서 한눈에 보여주는 곳이 없다는 것.
+
+그래서 최근 여섯 시즌의 부상 기사를 모아 선수별로 어느 부위를 몇 번 다쳤는지 신체 지도 위에 노랑·주황·빨강으로 칠하고, 빈도·결장 기간·가을야구 직전 이탈 여부를 합친 부상 이탈 지수로 선수 간 가용성을 비교하는 대시보드를 만들기로 하였다.
+
+## 무엇을 보여주나
+
+- 선수별 신체 히트맵: 부상 부위를 빈도와 결장 일수에 따라 색으로 표시
+- 부상 타임라인: 시즌별 이탈 구간과 9월 이후 이탈 강조
+- 부상 이탈 지수 랭킹: 팀·리그 단위 비교
+- 근거 기사: 각 부상 건의 출처 링크
 
 ## 시작하기
 
@@ -15,20 +26,9 @@ cp .env.example .env          # 네이버 개발자센터에서 발급한 키 �
 # crawler/seeds/players.csv 에 선수 명단 채우기
 cd crawler && npm install
 npm run seed                                  # DB 생성 + 시드
-node fetch-news.js --team SSG --max 200       # 네이버 뉴스 수집
+node fetch-news.js --team SAMSUNG --max 200   # 네이버 뉴스 수집
 npm run parse                                 # 부위/기간 추출
 npm run export                                # web/public/data/*.json 생성
 ```
 
 한 번에: `npm run all` (fetch 옵션 없이 전체 선수 대상).
-
-## 검수
-
-```sql
--- 자동 추출 결과 확인
-SELECT i.id, p.name, b.name_ko, i.side, i.injury_type, i.start_date, i.end_date, i.confidence, a.title
-FROM injuries i JOIN players p ON p.id=i.player_id JOIN body_parts b ON b.id=i.body_part_id
-JOIN articles a ON a.id=i.source_article_id ORDER BY i.confidence;
--- 오탐 처리
-UPDATE injuries SET status='rejected' WHERE id=?;
-```

@@ -14,9 +14,9 @@ const settings = Object.fromEntries(db.prepare("SELECT key, value FROM settings"
 
 const ranking = db.prepare(`
   SELECT p.id, p.name, p.team_id, p.position,
-         g.injury_count, g.total_days_out, g.late_season_count, g.recurrence_count, g.gbi
-  FROM v_player_gbi g JOIN players p ON p.id = g.player_id
-  ORDER BY g.gbi DESC`).all();
+         g.injury_count, g.total_days_out, g.late_season_count, g.recurrence_count, g.iai
+  FROM v_player_iai g JOIN players p ON p.id = g.player_id
+  ORDER BY g.iai DESC`).all();
 
 const leagueParts = db.prepare(`
   SELECT body_part_id, COUNT(*) AS injury_count, COALESCE(SUM(days_out), 0) AS total_days_out

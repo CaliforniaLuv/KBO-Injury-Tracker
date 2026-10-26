@@ -1,4 +1,4 @@
--- KBO 유리몸 트래커 스키마 (SQLite)
+-- KBO 부상 이탈 트래커 스키마 (SQLite)
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS teams (
@@ -92,11 +92,11 @@ CREATE TABLE IF NOT EXISTS settings (
   value TEXT NOT NULL
 );
 INSERT OR IGNORE INTO settings (key, value) VALUES
-  ('gbi.w_frequency',   '1.0'),
-  ('gbi.w_days',        '1.0'),
-  ('gbi.w_late_season', '1.5'),
-  ('gbi.w_recurrence',  '1.2'),
-  ('gbi.days_divisor',  '30'),
+  ('iai.w_frequency',   '1.0'),
+  ('iai.w_days',        '1.0'),
+  ('iai.w_late_season', '1.5'),
+  ('iai.w_recurrence',  '1.2'),
+  ('iai.days_divisor',  '30'),
   ('color.yellow_max_count', '2'),  ('color.yellow_max_days', '30'),
   ('color.orange_max_count', '4'),  ('color.orange_max_days', '90'),
   ('seasons', '2021,2022,2023,2024,2025,2026'),
@@ -116,8 +116,8 @@ FROM injuries i
 WHERE i.status <> 'rejected'
 GROUP BY i.player_id, i.body_part_id;
 
--- 선수별 GBI 뷰
-CREATE VIEW IF NOT EXISTS v_player_gbi AS
+-- 선수별 IAI(부상 이탈 지수) 뷰
+CREATE VIEW IF NOT EXISTS v_player_iai AS
 WITH s AS (
   SELECT key, CAST(value AS REAL) AS v FROM settings
 ),
@@ -140,9 +140,9 @@ agg AS (
 SELECT
   a.*,
   ROUND(
-      a.injury_count     * (SELECT v FROM s WHERE key='gbi.w_frequency')
-    + (a.total_days_out  / (SELECT v FROM s WHERE key='gbi.days_divisor')) * (SELECT v FROM s WHERE key='gbi.w_days')
-    + a.late_season_count * (SELECT v FROM s WHERE key='gbi.w_late_season')
-    + a.recurrence_count  * (SELECT v FROM s WHERE key='gbi.w_recurrence')
-  , 2) AS gbi
+      a.injury_count     * (SELECT v FROM s WHERE key='iai.w_frequency')
+    + (a.total_days_out  / (SELECT v FROM s WHERE key='iai.days_divisor')) * (SELECT v FROM s WHERE key='iai.w_days')
+    + a.late_season_count * (SELECT v FROM s WHERE key='iai.w_late_season')
+    + a.recurrence_count  * (SELECT v FROM s WHERE key='iai.w_recurrence')
+  , 2) AS iai
 FROM agg a;
